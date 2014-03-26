@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Name=BMI Calculator
+Icon=harbour-bmi_calculator
+Exec=harbour-bmi_calculator
+
