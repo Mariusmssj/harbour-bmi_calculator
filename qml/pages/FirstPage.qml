@@ -45,7 +45,7 @@ Page {
     property real targetupper : 0.0
     property real targetlower : 0.0
 
-    function fieldNames()
+    function fieldNames() //Functionnt to change and name labels to different input measurements
     {
         bmi = 0
         category.text = ""
@@ -94,17 +94,17 @@ Page {
         }
     }
 
-    function process()
+    function process() //main function that calls convertions to be done
     {
         convert();
-        mark.update()
-        mark.visible = true
-        saveBMI()
-        deleteTable()
-        saveBMI()
+        mark.update()       //shows users their bmi on a picture scale
+        mark.visible = true //shows users their bmi on a picture scale
+        saveBMI()           //creates a table if one didn't exist
+        deleteTable()       //deletes the table
+        saveBMI()           //saved the value in new made table
     }
 
-    function calcCategory(cbmi)
+    function calcCategory(cbmi) //uses the BMI index to set a category
     {
         if(cbmi < 18.5)
             category.text = "Underweight"
@@ -116,7 +116,7 @@ Page {
             category.text = "Obese"
     }
 
-    function convert()
+    function convert() //converts different weight and heigh values to give a BMI
     {
         var cmHeight = 0.0
         var kgWeight = 0.0
@@ -158,7 +158,8 @@ Page {
             category.text = ""
         }
     }
-    function calcUpLow(height)
+
+    function calcUpLow(height) //calculates the upper and lower weight limits
     {
         targetupper = 25/1.3*(height/100*height/100*Math.sqrt(height/100.))
         targetlower = 18.5/1.3*(height/100*height/100*Math.sqrt(height/100.))
@@ -179,7 +180,7 @@ Page {
             range.text = "Your healthy range is from: " + targetlower.toFixed(0) + " to: " + targetupper.toFixed(0) +" kgs"
     }
 
-    function calcBMI(cheight, cweight)
+    function calcBMI(cheight, cweight) //calculates the BMI index using weight and heigh
     {
         var temp = 0.0
         bmi = 1.3*cweight/(cheight/100*cheight/100*Math.sqrt(cheight/100.))
@@ -191,6 +192,11 @@ Page {
             temp = 31
         scaleBmi = (temp-16)*((page.width-9)-0)/(31-16)
     }
+
+    /////////////////////////DATABASE FUCNTIONS///////////////////////////////////
+    /*database fucntions are odly coded because, couldn't figure out how to update
+    a single value in the database, it was easier to delete and add new table each
+    time. A better way would be prefered but there a lack of knowledge to do it */
 
     function getSavedBMI()
     {
@@ -289,7 +295,7 @@ Page {
                 onCurrentIndexChanged: fieldNames()
             }
 
-            TextField {
+            TextField { //Input for height
                 id: heightField
                 width: page.width
                 label: "Enter your height in cm"
@@ -302,7 +308,7 @@ Page {
                 EnterKey.onClicked: measureType.currentIndex === 0 ? weightField.focus = true : heightField2.focus = true
             }
 
-            TextField {
+            TextField { //Input for height 2
                 visible: false
                 id: heightField2
                 width: page.width
@@ -316,7 +322,7 @@ Page {
                 EnterKey.onClicked:  weightField.focus = true
             }
 
-            TextField {
+            TextField { //Input for weight
                 id: weightField
                 width: page.width
                 label: "Enter your weight in kg"
@@ -337,7 +343,7 @@ Page {
                                     }
             }
 
-            TextField {
+            TextField { //Input for weight 2
                 visible: false
                 id: weightField2
                 width: page.width
@@ -351,14 +357,14 @@ Page {
                 EnterKey.onClicked: { weightField2.focus = false; process()}
             }
 
-            Button{
+            Button{ //Button to perform BMI calculations
                 id: btncalc
                 text: "Calculate BMI"
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked:process()
             }
 
-            Label{
+            Label{ //Main BMI label to display BMI
                 text: "Your BMI: " + bmi.toFixed(2)
                 color: Theme.highlightColor
                 font.pixelSize: Theme.fontSizeLarge
@@ -366,7 +372,7 @@ Page {
                 anchors.leftMargin: 30
             }
 
-            Label{
+            Label{ //Displays BMI category
                 id: category
                 text: ""
                 color: Theme.highlightColor
@@ -374,7 +380,8 @@ Page {
                 anchors.left: parent.left
                 anchors.leftMargin: 30
             }
-            Image{
+
+            Image{ //Shows BMI index on an image scale
                 id: scale
                 source: "bmi2.png"
 
@@ -386,7 +393,7 @@ Page {
                     source: "mark.png"
                 }
             }
-            Label{
+            Label{ //Displays the upper and lower BMI ranges
                 id: range
                 text: ""
                 color: Theme.highlightColor
